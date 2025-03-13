@@ -5,4 +5,8 @@
     <string name="your_name">Qual o seu nome?</string>
     <string name="insert">Insira seu nome</string>
     <string name="next">Próximo</string>
+    <string name="hi">Olá !</string>
+    <string name="male">Masculino</string>
+    <string name="female">Feminino</string>
+    <string name="calcul">Calcule</string>
 </resources>
