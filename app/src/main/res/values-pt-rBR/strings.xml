@@ -9,4 +9,14 @@
     <string name="male">Masculino</string>
     <string name="female">Feminino</string>
     <string name="calcul">Calcule</string>
+    <string name="age">Idade</string>
+    <string name="weight">Peso</string>
+    <string name="hight">Altura</string>
+    <string name="bmiresult">Seu Resultado de IMC</string>
+    <string name="cardresult"> 30,6</string>
+    <string name="yourclass">Você tem Obesidade Classe I</string>
+    <string name="newcalc">Novo Calc</string>
+    <string name="valueage">50</string>
+    <string name="valueweight">97 kg</string>
+    <string name="valuehigh">178 cm</string>
 </resources>
