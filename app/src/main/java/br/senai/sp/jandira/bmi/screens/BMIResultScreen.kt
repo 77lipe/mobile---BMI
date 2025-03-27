@@ -31,10 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi.R
 
 @Composable
-fun ResultBMI(modifier: Modifier = Modifier) {
+fun ResultBMI(navegacao: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -163,6 +164,7 @@ fun ResultBMI(modifier: Modifier = Modifier) {
                                         modifier = Modifier
                                             .padding(top = 12.dp)
                                             .padding(horizontal = 22.dp),
+                                        color = Color.Black,
                                         text = stringResource(
                                             R.string.valueage
                                         ),
@@ -199,6 +201,7 @@ fun ResultBMI(modifier: Modifier = Modifier) {
                                         modifier = Modifier
                                             .padding(top = 12.dp)
                                             .padding(horizontal = 22.dp),
+                                        color = Color.Black,
                                         text = stringResource(
                                             R.string.valueweight
                                         ),
@@ -234,6 +237,7 @@ fun ResultBMI(modifier: Modifier = Modifier) {
                                         modifier = Modifier
                                             .padding(top = 12.dp)
                                             .padding(horizontal = 22.dp),
+                                        color = Color.Black,
                                         text = stringResource(
                                             R.string.valuehigh
                                         ),
@@ -260,14 +264,16 @@ fun ResultBMI(modifier: Modifier = Modifier) {
                         thickness = 1.dp
                     )
                     Button(
-                        onClick = {},
+                        onClick = {
+                            navegacao.navigate(route = "dados")
+                        },
                         modifier = Modifier
                             .padding(24.dp)
-                            .height(55.dp)
+                            .height(60.dp)
                             .width(300.dp),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(
-                            Color(0xFF8FC96F)
+                            Color(0xFF81AF3D)
                         )
                     ) {
                         Text(
@@ -288,5 +294,5 @@ fun ResultBMI(modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 private fun ResultPreview() {
-    ResultBMI()
+    //ResultBMI()
 }

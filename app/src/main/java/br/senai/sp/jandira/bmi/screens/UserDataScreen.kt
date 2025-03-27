@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.bmi.screens
 
+import android.content.Context
 import android.media.tv.TvRecordingClient.RecordingCallback
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -47,24 +49,33 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi.R
 
 @Composable
-fun UserDataFun(modifier: Modifier = Modifier) {
+fun UserDataFun(navegacao: NavHostController) {
 
-    var nameState = remember {
-        mutableStateOf("Senai")
+    val context = LocalContext.current
+    val userFile = context
+        .getSharedPreferences("userFile", Context.MODE_PRIVATE)
+
+    val editor = userFile.edit()
+
+    val userName = userFile.getString("user_name", "User name not found!")
+
+    var isErrorState = remember {
+        mutableStateOf(false)
     }
 
-    var nomeAge = remember {
+    var ageState = remember {
         mutableStateOf(value = "")
     }
 
-    var nomeWeight = remember {
+    var weightState = remember {
         mutableStateOf(value = "")
     }
 
-    var nomeHeight = remember {
+    var heightState = remember {
         mutableStateOf(value = "")
     }
 
@@ -84,10 +95,9 @@ fun UserDataFun(modifier: Modifier = Modifier) {
             Text(
                 modifier = Modifier
                     .padding(top = 50.dp)
-                    .padding(horizontal = 22.dp),
+                    .padding(horizontal = 10.dp),
                 text = stringResource(
-                    R.string.hi
-                ),
+                    R.string.hi) + ", $userName!",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
 
@@ -198,9 +208,9 @@ fun UserDataFun(modifier: Modifier = Modifier) {
                             .padding(16.dp)
                     ) {
                         OutlinedTextField(
-                            value = nomeAge.value,
+                            value = ageState.value,
                             onValueChange = { nome ->
-                                nomeAge.value = nome
+                                ageState.value = nome
                             },
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -224,9 +234,9 @@ fun UserDataFun(modifier: Modifier = Modifier) {
                             textStyle = TextStyle(fontSize = 24.sp)
                         )
                         OutlinedTextField(
-                            value = nomeWeight.value,
+                            value = weightState.value,
                             onValueChange = {nome ->
-                                nomeWeight.value = nome
+                                weightState.value = nome
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -251,9 +261,9 @@ fun UserDataFun(modifier: Modifier = Modifier) {
                             textStyle = TextStyle(fontSize = 24.sp)
                         )
                         OutlinedTextField(
-                            value = nomeHeight.value,
+                            value = heightState.value,
                             onValueChange = {nome ->
-                                nomeHeight.value = nome
+                                heightState.value = nome
                             },
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -277,8 +287,15 @@ fun UserDataFun(modifier: Modifier = Modifier) {
                             textStyle = TextStyle(fontSize = 24.sp)
                         )
                     }
+
                     Button(
-                        onClick = {},
+                        onClick = {
+                            editor.putInt("age_value", ageState.value.toInt())
+                            editor.putFloat("weight_value", weightState.value.toFloat())
+                            editor.putFloat("height_value", heightState.value.toFloat())
+                            editor.apply()
+                            navegacao.navigate(route = "result")
+                        },
                         modifier = Modifier
                             .padding(start = 10.dp, top = 70.dp, end = 10.dp)
                             .height(55.dp)
@@ -308,5 +325,5 @@ fun UserDataFun(modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 private fun UserDataPreview() {
-    UserDataFun()
+    //UserDataFun()
 }

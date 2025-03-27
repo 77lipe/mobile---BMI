@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.bmi.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +14,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -27,9 +30,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,8 +47,21 @@ import br.senai.sp.jandira.bmi.R
 fun HomeScreen(navegacao: NavHostController) {
 
     var nameState = remember {
-        mutableStateOf("Senai")
+        mutableStateOf("")
     }
+
+    var isErrorState = remember {
+        mutableStateOf(false)
+    }
+
+    // Abrir ou criar um arquivo SharedPreferences
+    val context = LocalContext.current
+    val userFile = context
+        .getSharedPreferences("userFile", Context.MODE_PRIVATE)
+
+    //Colocar o arquivo em modo de edição
+    val editor = userFile.edit()
+
 
     Box(
         modifier = Modifier
@@ -117,7 +135,7 @@ fun HomeScreen(navegacao: NavHostController) {
                     fontWeight = FontWeight.Bold
 
                 )
-                TextField(
+                OutlinedTextField(
                     value = nameState.value,
                     onValueChange = {
                         nameState.value = it
@@ -125,24 +143,51 @@ fun HomeScreen(navegacao: NavHostController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    label = { Text(text = stringResource(R.string.your_name)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done,
                         capitalization = KeyboardCapitalization.Words
                     ),
 //                    trailingIcon = {},
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Create,
-                            contentDescription = "",
-                            tint = Color.Gray
-                        )
+                    trailingIcon = {
+                        if ( isErrorState.value){
+                            Icon(
+                                imageVector = Icons.Default.ErrorOutline,
+                                contentDescription = "",
+                                tint = Color.Red
+                            )
+                        }else{
+                            Icon(
+                                imageVector = Icons.Default.Create,
+                                contentDescription = "",
+                                tint = Color(color = 0xFF8FC96F)
+                            )
+                        }
+                    },
+
+                    isError = isErrorState.value,
+                    supportingText = {
+                        if ( isErrorState.value){
+                            Text(
+                                text = stringResource(R.string.error_name)
+                            )
+                        }
                     }
 
                 )
             }
             Button(
                 onClick = {
-                    navegacao.navigate(route = "dados")
+                    if (nameState.value.isEmpty()){
+                        isErrorState.value = true
+                    } else {
+                        editor.putString("user_name", nameState.value)
+                        editor.apply()
+                        navegacao.navigate(route = "dados")
+                    }
+
                 },
                 colors = ButtonDefaults.buttonColors(
                     Color(0xFF8FC96F)
