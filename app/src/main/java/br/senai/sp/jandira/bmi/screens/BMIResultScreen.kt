@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.bmi.screens
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -22,12 +23,15 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +40,14 @@ import br.senai.sp.jandira.bmi.R
 
 @Composable
 fun ResultBMI(navegacao: NavHostController) {
+
+    val context = LocalContext.current
+    val userFile = context.getSharedPreferences("userFile", Context.MODE_PRIVATE)
+
+    val userWeight = userFile.getFloat("weight_value", 0.0f)
+    val userHight = userFile.getFloat("height_value", 0.0f)
+    val userAge = userFile.getInt("age_value", 0)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -165,9 +177,7 @@ fun ResultBMI(navegacao: NavHostController) {
                                             .padding(top = 12.dp)
                                             .padding(horizontal = 22.dp),
                                         color = Color.Black,
-                                        text = stringResource(
-                                            R.string.valueage
-                                        ),
+                                        text = "$userAge",
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -202,9 +212,7 @@ fun ResultBMI(navegacao: NavHostController) {
                                             .padding(top = 12.dp)
                                             .padding(horizontal = 22.dp),
                                         color = Color.Black,
-                                        text = stringResource(
-                                            R.string.valueweight
-                                        ),
+                                        text = "$userWeight Kg",
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -238,9 +246,7 @@ fun ResultBMI(navegacao: NavHostController) {
                                             .padding(top = 12.dp)
                                             .padding(horizontal = 22.dp),
                                         color = Color.Black,
-                                        text = stringResource(
-                                            R.string.valuehigh
-                                        ),
+                                        text = String.format(java.util.Locale.getDefault(), format = "%.2f", userHight),
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -268,8 +274,8 @@ fun ResultBMI(navegacao: NavHostController) {
                             navegacao.navigate(route = "dados")
                         },
                         modifier = Modifier
-                            .padding(24.dp)
-                            .height(60.dp)
+                            .padding(20.dp)
+                            .height(80.dp)
                             .width(300.dp),
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -280,7 +286,7 @@ fun ResultBMI(navegacao: NavHostController) {
                             text = stringResource(
                                 R.string.newcalc
                             ),
-                            fontSize = 20.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -294,5 +300,5 @@ fun ResultBMI(navegacao: NavHostController) {
 @Preview(showSystemUi = true)
 @Composable
 private fun ResultPreview() {
-    //ResultBMI()
+//    ResultBMI()
 }
