@@ -41,6 +41,7 @@ import br.senai.sp.jandira.bmi.R
 import br.senai.sp.jandira.bmi.calcs.BmiCalculate
 import br.senai.sp.jandira.bmi.model.BmiStatus
 import br.senai.sp.jandira.bmi.screens.components.BmiLevel
+import br.senai.sp.jandira.bmi.ui.theme.convetertNumberToLocale
 
 @Composable
 fun ResultBMI(navegacao: NavHostController) {
@@ -271,14 +272,39 @@ fun ResultBMI(navegacao: NavHostController) {
                         BmiLevel(
                          bulletColor = colorResource(R.color.light_blue),
                             leftText = stringResource(R.string.underweight),
-                            rightText = "< ${}",
+                            rightText = "< ${convetertNumberToLocale(18.5)}",
                             isFilled = if (bmi.bmiStatus == BmiStatus.UNDER_WEIGHT) true else false
                         )
-                        BmiLevel()
-                        BmiLevel()
-                        BmiLevel()
-                        BmiLevel()
-                        BmiLevel()
+                        BmiLevel(
+                            bulletColor = colorResource(R.color.light_blue),
+                            leftText = stringResource(R.string.underweight),
+                            rightText = "< ${convetertNumberToLocale(18.5)}",
+                            isFilled = if (bmi.bmiStatus == BmiStatus.UNDER_WEIGHT) true else false
+                        )
+                        BmiLevel(
+                            bulletColor = colorResource(R.color.light_blue),
+                            leftText = stringResource(R.string.underweight),
+                            rightText = "< ${convetertNumberToLocale(18.5)}",
+                            isFilled = if (bmi.bmiStatus == BmiStatus.UNDER_WEIGHT) true else false
+                        )
+                        BmiLevel(
+                            bulletColor = colorResource(R.color.light_blue),
+                            leftText = stringResource(R.string.underweight),
+                            rightText = "< ${convetertNumberToLocale(18.5)}",
+                            isFilled = if (bmi.bmiStatus == BmiStatus.UNDER_WEIGHT) true else false
+                        )
+                        BmiLevel(
+                            bulletColor = colorResource(R.color.light_blue),
+                            leftText = stringResource(R.string.underweight),
+                            rightText = "< ${convetertNumberToLocale(18.5)}",
+                            isFilled = if (bmi.bmiStatus == BmiStatus.UNDER_WEIGHT) true else false
+                        )
+                        BmiLevel(
+                            bulletColor = colorResource(R.color.light_blue),
+                            leftText = stringResource(R.string.underweight),
+                            rightText = "< ${convetertNumberToLocale(18.5)}",
+                            isFilled = if (bmi.bmiStatus == BmiStatus.UNDER_WEIGHT) true else false
+                        )
                     }
                     Divider(
                         modifier = Modifier
