@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
@@ -37,6 +38,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi.R
+import br.senai.sp.jandira.bmi.calcs.BmiCalculate
+import br.senai.sp.jandira.bmi.model.BmiStatus
+import br.senai.sp.jandira.bmi.screens.components.BmiLevel
 
 @Composable
 fun ResultBMI(navegacao: NavHostController) {
@@ -47,6 +51,10 @@ fun ResultBMI(navegacao: NavHostController) {
     val userWeight = userFile.getFloat("weight_value", 0.0f)
     val userHight = userFile.getFloat("height_value", 0.0f)
     val userAge = userFile.getInt("age_value", 0)
+
+    val bmi = BmiCalculate(
+        userWeight, userHight.toFloat().div(100))
+
 
     Box(
         modifier = Modifier
@@ -111,7 +119,7 @@ fun ResultBMI(navegacao: NavHostController) {
                                 modifier = Modifier
                                     .padding(top = 12.dp)
                                     .size(110.dp) // Define o tamanho do Card
-                                    .border(8.dp, Color(0xFF7EAB35), CircleShape), // Adiciona uma borda vermelha com 4dp de espessura
+                                    .border(8.dp, color = bmi.bmiColor, CircleShape), // Adiciona uma borda vermelha com 4dp de espessura
                             ) {
                                 Column (
                                     modifier = Modifier
@@ -124,8 +132,10 @@ fun ResultBMI(navegacao: NavHostController) {
                                             .padding(top = 38.dp)
                                             .padding(horizontal = 22.dp),
                                         color = Color.Black,
-                                        text = stringResource(
-                                            R.string.cardresult
+                                        text = String.format(
+                                            java.util.Locale.getDefault(),
+                                            "%.1f",
+                                            bmi.bmi.second
                                         ),
                                         fontSize = 32.sp,
                                         fontWeight = FontWeight.Bold
@@ -136,9 +146,7 @@ fun ResultBMI(navegacao: NavHostController) {
                                 modifier = Modifier
                                     .padding(top = 12.dp)
                                     .padding(horizontal = 22.dp),
-                                text = stringResource(
-                                    R.string.yourclass
-                                ),
+                                text = bmi.bmi.first,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -260,7 +268,17 @@ fun ResultBMI(navegacao: NavHostController) {
                             .padding(start = 12.dp, end = 12.dp, top = 10.dp),
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFA7D58B))
                     ){
-
+                        BmiLevel(
+                         bulletColor = colorResource(R.color.light_blue),
+                            leftText = stringResource(R.string.underweight),
+                            rightText = "< ${}",
+                            isFilled = if (bmi.bmiStatus == BmiStatus.UNDER_WEIGHT) true else false
+                        )
+                        BmiLevel()
+                        BmiLevel()
+                        BmiLevel()
+                        BmiLevel()
+                        BmiLevel()
                     }
                     Divider(
                         modifier = Modifier
